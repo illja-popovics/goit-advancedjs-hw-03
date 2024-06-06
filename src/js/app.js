@@ -1,5 +1,5 @@
-import axios from 'axios';
 import SlimSelect from 'slim-select';
+import axios from 'axios';
 import iziToast from 'izitoast';
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
 
@@ -14,23 +14,24 @@ const catBreed = document.querySelector('.cat-breed');
 const catDescription = document.querySelector('.cat-description');
 const catTemperament = document.querySelector('.cat-temperament');
 
+
+
 async function initialize() {
     try {
         console.log('Initializing...');
         loader.style.display = 'block';
-        breedSelect.style.display = 'none';
         error.style.display = 'none';
 
         const breeds = await fetchBreeds();
         console.log('Fetched breeds:', breeds);
         populateBreedSelect(breeds);
+        
+        console.log(document.querySelector('.breed-select'));
 
-        new SlimSelect({
-            select: '.breed-select'
-        });
-
-        breedSelect.style.display = 'block';
         loader.style.display = 'none';
+        new SlimSelect({
+            select: document.querySelector('.breed-select'),
+        });
     } catch (err) {
         console.error('Error during initialization:', err);
         loader.style.display = 'none';
@@ -67,10 +68,9 @@ breedSelect.addEventListener('change', async () => {
         catInfo.style.display = 'flex';
         loader.style.display = 'none';
     } catch (err) {
-        console.error('Error fetching cat data:', err);
         loader.style.display = 'none';
         error.style.display = 'block';
-        iziToast.error({ title: 'Error', message: err.message });
+        iziToast.error({ title: 'Error', message: "there was a problem while fetching the data" });
     }
 });
 
